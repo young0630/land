@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>간편 입사 지원</title>
+    <title>보험영업 간편입사 지원</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Cloudflare Turnstile 스크립트 -->
@@ -81,7 +81,6 @@
                         <input type="hidden" id="contact" name="contact">
                     </div>
 
-                    <!-- ★★★ 체크박스 수정됨 ★★★ -->
                     <div class="space-y-3 pt-4">
                         <div class="flex items-start">
                             <input id="privacy-agree" name="privacy_agree" type="checkbox" checked class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-1">
@@ -152,26 +151,23 @@
             window.addEventListener('scroll', () => {
                 const scrollableHeight = document.body.scrollHeight - window.innerHeight;
                 if (scrollableHeight <= 0) return;
-
                 const scrollPercent = Math.round((window.scrollY / scrollableHeight) * 100);
-                
                 if (scrollPercent > maxScroll) {
                     maxScroll = scrollPercent;
                     scrollDepthInput.value = `${maxScroll}%`;
                 }
-
                 if (maxScroll >= 50 && !scrolled50) {
                     scrolled50 = true;
                     if (typeof fbq === 'function') { fbq('trackCustom', 'Scroll_50_Percent'); }
                 }
             });
 
-            // URL 파라미터 자동 채우기
+            // URL 파라미터 자동 채우기 및 저장
             function prefillFormFromUrl() {
                 const urlParams = new URLSearchParams(window.location.search);
                 document.getElementById('url_params').value = urlParams.toString();
-                const name = urlParams.get('name');
-                const contact = urlParams.get('contact');
+                const name = urlParams.get('name') || urlParams.get('full_name');
+                const contact = urlParams.get('contact') || urlParams.get('phone_number');
                 if (name) { document.getElementById('name').value = name; }
                 if (contact) {
                     const normalizedContact = contact.replace(/[^0-9]/g, '');
