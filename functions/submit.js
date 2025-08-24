@@ -67,9 +67,13 @@ export async function onRequestPost({ request, env }) {
         // 2. 사용자가 최종적으로 입력한 정보
         const submittedName = formData.get('name')?.toString() || '';
         const submittedContact = formData.get('contact')?.toString() || '';
+        const scrollDepth = formData.get('scroll_depth')?.toString() || '0%';
         
         if (!submittedName || !submittedContact) {
             throw new Error("필수 입력값이 누락되었습니다.");
+        }
+        if (formData.get('privacy_agree') !== 'on') {
+            throw new Error("개인정보처리방침에 동의해야 합니다.");
         }
 
         // 3. 최종 텔레그램 메시지 조합
@@ -81,6 +85,9 @@ ${platformInfo}
 *👤 사용자 최종 입력 정보*
 *이름:* ${escapeMarkdownV2(submittedName)}
 *연락처:* ${escapeMarkdownV2(submittedContact)}
+
+*🔍 사용자 행동*
+*페이지 스크롤:* ${escapeMarkdownV2(scrollDepth)}
         `;
 
         const apiUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
