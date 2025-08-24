@@ -1,3 +1,6 @@
+/**
+ * 텔레그램 MarkdownV2 형식에 맞춰 특수 문자를 이스케이프 처리하는 함수
+ */
 function escapeMarkdownV2(text) {
     if (!text) return '';
     const charsToEscape = ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'];
@@ -24,7 +27,7 @@ async function verifyTurnstile(token, secretKey, remoteIp) {
         }
         const data = await response.json();
         return data.success;
-    } catch (error)
+    } catch (error) { // ★★★ 이 부분에 빠져있던 중괄호를 추가하여 오류를 수정했습니다. ★★★
         console.error("Exception during Turnstile fetch:", error);
         return false;
     }
