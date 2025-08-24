@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보험영업 간편입사 지원</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Cloudflare Turnstile 스크립트 -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .agreement-link { text-decoration: underline; color: #4f46e5; }
+        .dark .agreement-link { color: #818cf8; }
+        .contact-input { text-align: center; flex: 1 1 0%; }
+        
+        /* 실시간 현황판 스타일 */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .status-completed {
+            background-color: #4f46e5; /* indigo-600 */
+            color: #fff;
+        }
+        .status-pending {
+            background-color: #fff;
+            color: #4f46e5;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+
+    <!-- 헤더 -->
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">성공적인 보험영업</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="max-w-4xl mx-auto">
+        
+        <!-- 메인 이미지 배너 -->
+        <section class="space-y-0">
+             <img src="/img/land01.png" alt="보험영업 혜택 1" class="w-full">
+             <img src="/img/land02.png" alt="보험영업 혜택 2" class="w-full">
+             <img src="/img/land03.png" alt="보험영업 혜택 3" class="w-full">
+        </section>
+
+        <div class="p-4 md:p-8">
+            <!-- 실시간 상담신청 현황 -->
+            <section class="my-12 p-6 bg-indigo-900/95 dark:bg-indigo-900/80 rounded-2xl shadow-lg">
+                <h2 class="text-xl font-bold text-white text-center mb-4">실시간 입사지원 현황</h2>
+                <div id="status-board-container" class="h-32 overflow-hidden relative">
+                    <ul id="status-list" class="absolute top-0 left-0 w-full space-y-2">
+                        <!-- 자바스크립트로 채워집니다 -->
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 문의 폼 섹션 -->
+            <section id="contact-section" class="mt-16 p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">보험영업 간편입사 지원하기</h2>
+                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">보험영업의 기준을 바꾸겠습니다.</p>
+                </div>
+
+                <!-- 문의 폼 -->
+                <form id="contact-form" class="space-y-6">
+                    <div>
+                        <label for="name" class="sr-only">이름</label>
+                        <input id="name" name="name" type="text" required class="relative block w-full px-3 py-3 text-gray-900 bg-gray-50 dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-md placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="이름">
+                    </div>
+                    
+                    <div>
+                        <label class="sr-only">연락처</label>
+                        <div class="flex items-center space-x-2">
+                            <input id="contact1" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" required class="contact-input relative block w-full px-3 py-3 text-gray-900 bg-gray-50 dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-md placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="010">
+                            <span class="text-gray-500 dark:text-gray-400">-</span>
+                            <input id="contact2" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" required class="contact-input relative block w-full px-3 py-3 text-gray-900 bg-gray-50 dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-md placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="1234">
+                            <span class="text-gray-500 dark:text-gray-400">-</span>
+                            <input id="contact3" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" required class="contact-input relative block w-full px-3 py-3 text-gray-900 bg-gray-50 dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 rounded-md placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="5678">
+                        </div>
+                        <input type="hidden" id="contact" name="contact">
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <input id="privacy-agree" name="privacy_agree" type="checkbox" checked class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-1">
+                            <label for="privacy-agree" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                <a href="https://land.gonplan.co.kr/resources/common/agreements/privacy_agreement1.html" target="_blank" class="agreement-link">개인정보처리방침</a>에 동의합니다.
+                            </label>
+                        </div>
+                        <div class="flex items-start">
+                            <input id="third-party-agree" name="third_party_agree" type="checkbox" checked class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-1">
+                            <label for="third-party-agree" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                <a href="https://land.gonplan.co.kr/resources/common/agreements/privacy_agreement2.html" target="_blank" class="agreement-link">제3자 제공 및 활용</a>에 동의합니다.
+                            </label>
+                        </div>
+                        <div class="flex items-start">
+                            <input id="marketing-agree" name="marketing_agree" type="checkbox" checked class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-1">
+                            <label for="marketing-agree" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                <a href="https://land.gonplan.co.kr/resources/common/agreements/privacy_agreement3.html" target="_blank" class="agreement-link">마케팅 수신</a>에 동의합니다.
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAABucVGz5ZsXM6npn"></div>
+
+                    <div>
+                        <button type="submit" id="submit-button" class="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white bg-indigo-600 border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <span id="button-text">간편입사 지원하기</span>
+                            <span id="button-spinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        </button>
+                    </div>
+                </form>
+                
+                <div id="response-message" class="text-center text-sm mt-4"></div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="mt-16 pb-8 text-center text-xs text-gray-500">
+        <p>&copy; 2025 성공적인 보험영업. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // 상담 신청 폼 로직
+        const form = document.getElementById('contact-form');
+        const submitButton = document.getElementById('submit-button');
+        const buttonText = document.getElementById('button-text');
+        const buttonSpinner = document.getElementById('button-spinner');
+        const responseMessage = document.getElementById('response-message');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const contact1 = document.getElementById('contact1').value;
+            const contact2 = document.getElementById('contact2').value;
+            const contact3 = document.getElementById('contact3').value;
+            document.getElementById('contact').value = (contact1 + contact2 + contact3).replace(/[^0-9]/g, '');
+
+            submitButton.disabled = true;
+            buttonText.classList.add('hidden');
+            buttonSpinner.classList.remove('hidden');
+            responseMessage.textContent = '';
+            responseMessage.classList.remove('text-green-500', 'text-red-500');
+
+            const formData = new FormData(form);
+            try {
+                const response = await fetch('/submit', { method: 'POST', body: formData });
+                const result = await response.json();
+                if (response.ok) {
+                    responseMessage.textContent = '지원이 완료되었습니다. 빠른 시일 내에 연락드리겠습니다!';
+                    responseMessage.classList.add('text-green-500');
+                    form.reset();
+                    if (typeof turnstile !== 'undefined') turnstile.reset();
+                } else {
+                    throw new Error(result.message || '지원 중 오류가 발생했습니다.');
+                }
+            } catch (error) {
+                responseMessage.textContent = error.message;
+                responseMessage.classList.add('text-red-500');
+            } finally {
+                submitButton.disabled = false;
+                buttonText.classList.remove('hidden');
+                buttonSpinner.classList.add('hidden');
+            }
+        });
+
+        // 실시간 현황판 로직
+        document.addEventListener('DOMContentLoaded', () => {
+            const statusList = document.getElementById('status-list');
+            const lastNames = ["김", "이", "박", "최", "정", "강", "조", "윤", "장", "임", "한", "오", "서", "신", "권", "황", "안", "송"];
+            const today = new Date();
+            const dateString = `${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
+
+            function createStatusItem() {
+                const name = lastNames[Math.floor(Math.random() * lastNames.length)] + "**";
+                const isCompleted = Math.random() > 0.4; // 접수완료 확률 60%
+                const statusText = isCompleted ? "접수완료" : "접수중";
+                const statusClass = isCompleted ? "status-completed" : "status-pending";
+                const randomDigits = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+                const phoneNumber = `010-****-${randomDigits}`;
+                
+                const li = document.createElement('li');
+                li.className = 'flex items-center justify-between p-2 bg-white/90 dark:bg-gray-800/90 rounded-md shadow text-gray-800 dark:text-gray-200 text-xs sm:text-sm';
+                li.innerHTML = `
+                    <span class="w-1/5 text-left">${dateString}</span>
+                    <span class="font-medium w-1/5 text-center">${name}</span>
+                    <span class="w-2/5 text-center">${phoneNumber}</span>
+                    <span class="${statusClass} status-badge w-1/5 text-center">${statusText}</span>
+                `;
+                return li;
+            }
+
+            // 초기 목록 생성
+            for (let i = 0; i < 5; i++) {
+                statusList.appendChild(createStatusItem());
+            }
+
+            function scrollStatus() {
+                const firstItem = statusList.firstChild;
+                if (!firstItem) return;
+                const itemHeight = firstItem.offsetHeight + 8;
+                statusList.style.transition = 'transform 0.8s ease-in-out';
+                statusList.style.transform = `translateY(-${itemHeight}px)`;
+                setTimeout(() => {
+                    statusList.style.transition = 'none';
+                    statusList.style.transform = 'translateY(0)';
+                    statusList.removeChild(firstItem);
+                    statusList.appendChild(createStatusItem());
+                }, 800);
+            }
+            setInterval(scrollStatus, 2100);
+        });
+    </script>
+</body>
+</html>
