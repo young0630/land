@@ -31,17 +31,16 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         .agreement-link { text-decoration: underline; color: #4f46e5; }
-        .dark .agreement-link { color: #818cf8; }
         .contact-input { text-align: center; flex: 1 1 0%; }
         .status-badge { padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; flex-shrink: 0; }
         .status-completed { background-color: #4f46e5; color: #fff; }
         .status-pending { background-color: #fff; color: #4f46e5; border: 1px solid #dee2e6; }
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+<body class="bg-gray-50 text-gray-800">
 
-    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 py-3"><h1 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">성공적인 보험영업</h1></div>
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3"><h1 class="text-xl font-bold text-indigo-600">성공적인 보험영업</h1></div>
     </header>
 
     <main class="max-w-4xl mx-auto">
@@ -57,10 +56,11 @@
                 <div id="status-board-container" class="h-32 overflow-hidden relative"><ul id="status-list" class="absolute top-0 left-0 w-full space-y-2"></ul></div>
             </section>
 
-            <section id="contact-section" class="mt-16 p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl">
+            <!-- ★★★ 폼 스타일 수정됨 ★★★ -->
+            <section id="contact-section" class="mt-16 p-8 bg-white rounded-2xl shadow-2xl">
                 <div class="text-center mb-8">
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">보험영업 간편입사 지원하기</h2>
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">보험영업의 기준을 바꾸겠습니다.</p>
+                    <h2 class="text-2xl font-bold text-gray-900">보험영업 간편입사 지원하기</h2>
+                    <p class="mt-2 text-sm text-gray-600">보험영업의 기준을 바꾸겠습니다.</p>
                 </div>
 
                 <form id="contact-form" class="space-y-6">
@@ -68,15 +68,15 @@
                     <input type="hidden" id="scroll_depth" name="scroll_depth" value="0%">
                     
                     <div>
-                        <input id="name" name="name" type="text" required class="relative block w-full px-3 py-3 text-gray-900 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="이름">
+                        <input id="name" name="name" type="text" required class="relative block w-full px-3 py-3 text-gray-900 bg-gray-50 border border-gray-300 rounded-md placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="이름">
                     </div>
                     <div>
                         <div class="flex items-center space-x-2">
-                            <input id="contact1" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" required class="contact-input relative block w-full px-3 py-3 text-gray-900 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="010">
+                            <input id="contact1" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="3" required class="contact-input relative block w-full px-3 py-3 text-gray-900 bg-gray-50 border border-gray-300 rounded-md placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="010">
                             <span class="text-gray-500">-</span>
-                            <input id="contact2" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" required class="contact-input relative block w-full px-3 py-3 text-gray-900 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="1234">
+                            <input id="contact2" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" required class="contact-input relative block w-full px-3 py-3 text-gray-900 bg-gray-50 border border-gray-300 rounded-md placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="1234">
                             <span class="text-gray-500">-</span>
-                            <input id="contact3" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" required class="contact-input relative block w-full px-3 py-3 text-gray-900 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="5678">
+                            <input id="contact3" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" required class="contact-input relative block w-full px-3 py-3 text-gray-900 bg-gray-50 border border-gray-300 rounded-md placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="5678">
                         </div>
                         <input type="hidden" id="contact" name="contact">
                     </div>
@@ -84,7 +84,7 @@
                     <div class="space-y-3 pt-4">
                         <div class="flex items-start">
                             <input id="privacy-agree" name="privacy_agree" type="checkbox" checked class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-1">
-                            <label for="privacy-agree" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                            <label for="privacy-agree" class="ml-2 text-sm text-gray-700">
                                 <a href="https://docs.google.com/document/d/1dnvIVeBg0NOxdBCuYpkVVi191bESt-4BdqTUEiYhDN0/edit?tab=t.0" target="_blank" class="agreement-link">개인정보처리방침</a>에 동의합니다.
                             </label>
                         </div>
@@ -162,14 +162,18 @@
                 }
             });
 
-            // URL 파라미터 자동 채우기 및 저장
+            // URL 파라미터 처리 로직
             function prefillFormFromUrl() {
                 const urlParams = new URLSearchParams(window.location.search);
                 document.getElementById('url_params').value = urlParams.toString();
+                
                 const name = urlParams.get('name') || urlParams.get('full_name');
                 const contact = urlParams.get('contact') || urlParams.get('phone_number');
-                if (name) { document.getElementById('name').value = name; }
-                if (contact) {
+                
+                if (name && !name.includes('{{')) { 
+                    document.getElementById('name').value = name; 
+                }
+                if (contact && !contact.includes('{{')) {
                     const normalizedContact = contact.replace(/[^0-9]/g, '');
                     if (normalizedContact.length >= 10) {
                         document.getElementById('contact1').value = normalizedContact.substring(0, 3);
