@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>간편입사 지원</title>
+    <title>보험영업 간편입사 지원</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Cloudflare Turnstile 스크립트 -->
@@ -20,13 +20,14 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
+    // 중요: 아래 YOUR_PIXEL_ID 부분을 실제 픽셀 ID로 교체해주세요.
     fbq('init', '24835612282690621');
     fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=24835612282690621&ev=PageView&noscript=1"
     /></noscript>
-
+    <!-- End Meta Pixel Code -->
 
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -85,7 +86,9 @@
                         <div class="flex items-start"><input id="third-party-agree" name="third_party_agree" type="checkbox" checked class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-1"><label for="third-party-agree" class="ml-2 text-sm text-gray-700 dark:text-gray-300"><a href="https://land.gonplan.co.kr/resources/common/agreements/privacy_agreement2.html" target="_blank" class="agreement-link">제3자 제공 및 활용</a></label></div>
                         <div class="flex items-start"><input id="marketing-agree" name="marketing_agree" type="checkbox" checked class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 mt-1"><label for="marketing-agree" class="ml-2 text-sm text-gray-700 dark:text-gray-300"><a href="https://land.gonplan.co.kr/resources/common/agreements/privacy_agreement3.html" target="_blank" class="agreement-link">마케팅 수신</a></label></div>
                     </div>
-                    <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY"></div>
+                    
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAABucVGz5ZsXM6npn"></div>
+                    
                     <div><button type="submit" id="submit-button" class="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white bg-indigo-600 border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"><span id="button-text">간편입사 지원하기</span><span id="button-spinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span></button></div>
                 </form>
                 <div id="response-message" class="text-center text-sm mt-4"></div>
