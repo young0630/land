@@ -36,43 +36,52 @@ async function verifyTurnstile(token, secretKey, remoteIp) {
 
 export async function onRequestPost({ request, env }) {
     try {
-        // 환경 변수 로드
         const { TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, TURNSTILE_SECRET_KEY } = env;
 
         if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID || !TURNSTILE_SECRET_KEY) {
-            console.error("CRITICAL: Environment variables are not set.");
             throw new Error("서버 설정에 문제가 발생했습니다. 관리자에게 문의하세요.");
         }
 
         const formData = await request.formData();
         
-        // Turnstile 토큰 검증
         const token = formData.get('cf-turnstile-response')?.toString();
         const ip = request.headers.get('CF-Connecting-IP');
         if (!token || !(await verifyTurnstile(token, TURNSTILE_SECRET_KEY, ip))) {
-            return new Response(JSON.stringify({ message: '비정상적인 접근입니다. (CAPTCHA 실패)' }), { status: 403, headers: { 'Content-Type': 'application/json' } });
+            return new Response(JSON.stringify({ message: '비정상적인 접근입니다.' }), { status: 403 });
         }
 
-        // 입력값 파싱 및 길이 검증
-        const name = formData.get('name')?.toString() || '';
-        const contact = formData.get('contact')?.toString() || '';
+        // 1. 플랫폼에서 넘어온 정보 (URL 파라미터)
+        const urlParamsString = formData.get('url_params')?.toString() || '';
+        let platformInfo = '없음';
+        if (urlParamsString) {
+            const params = new URLSearchParams(urlParamsString);
+            let paramsText = [];
+            for (const [key, value] of params.entries()) {
+                paramsText.push(`*${escapeMarkdownV2(key)}:* ${escapeMarkdownV2(value)}`);
+            }
+            if(paramsText.length > 0) {
+                platformInfo = paramsText.join('\n');
+            }
+        }
+
+        // 2. 사용자가 최종적으로 입력한 정보
+        const submittedName = formData.get('name')?.toString() || '';
+        const submittedContact = formData.get('contact')?.toString() || '';
         
-        const privacyAgree = formData.get('privacy_agree') ? '동의 ✅' : '비동의 ❌';
-        const thirdPartyAgree = formData.get('third_party_agree') ? '동의 ✅' : '비동의 ❌';
-        const marketingAgree = formData.get('marketing_agree') ? '동의 ✅' : '비동의 ❌';
-
-        if (name.length > 50 || contact.length > 50) {
-             throw new Error("입력값이 너무 깁니다.");
-        }
-        if (!name || !contact) {
+        if (!submittedName || !submittedContact) {
             throw new Error("필수 입력값이 누락되었습니다.");
         }
-        if (formData.get('privacy_agree') !== 'on' || formData.get('third_party_agree') !== 'on') {
-            throw new Error("필수 약관에 동의해야 합니다.");
-        }
 
-        // 텔레그램 메시지 생성
-        const text = `*새로운 입사 지원이 도착했습니다* 🚀\n\n*이름:* ${escapeMarkdownV2(name)}\n*연락처:* ${escapeMarkdownV2(contact)}\n\n*개인정보처리방침:* ${privacyAgree}\n*제3자 제공/활용:* ${thirdPartyAgree}\n*마케팅 수신:* ${marketingAgree}`;
+        // 3. 최종 텔레그램 메시지 조합
+        const text = `*🚀 새로운 입사 지원*
+
+*📋 플랫폼 전달 정보*
+${platformInfo}
+
+*👤 사용자 최종 입력 정보*
+*이름:* ${escapeMarkdownV2(submittedName)}
+*연락처:* ${escapeMarkdownV2(submittedContact)}
+        `;
 
         const apiUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
@@ -93,10 +102,10 @@ export async function onRequestPost({ request, env }) {
             throw new Error(`텔레그램 API 오류가 발생했습니다.`);
         }
 
-        return new Response(JSON.stringify({ message: '신청 성공' }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        return new Response(JSON.stringify({ message: '신청 성공' }), { status: 200 });
 
     } catch (error) {
-        console.error('An unexpected error occurred in onRequestPost:', error);
-        return new Response(JSON.stringify({ message: error.message || "서버에서 알 수 없는 오류가 발생했습니다." }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+        console.error('An unexpected error occurred:', error);
+        return new Response(JSON.stringify({ message: error.message || "서버 오류 발생" }), { status: 500 });
     }
 }
