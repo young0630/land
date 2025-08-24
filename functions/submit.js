@@ -1,6 +1,3 @@
-/**
- * 텔레그램 MarkdownV2 형식에 맞춰 특수 문자를 이스케이프 처리하는 함수
- */
 function escapeMarkdownV2(text) {
     if (!text) return '';
     const charsToEscape = ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'];
@@ -27,7 +24,7 @@ async function verifyTurnstile(token, secretKey, remoteIp) {
         }
         const data = await response.json();
         return data.success;
-    } catch (error) {
+    } catch (error)
         console.error("Exception during Turnstile fetch:", error);
         return false;
     }
@@ -71,8 +68,8 @@ export async function onRequestPost({ request, env }) {
             throw new Error("필수 약관에 동의해야 합니다.");
         }
 
-        // 텔레그램 메시지 생성
-        const text = `*새로운 입사 지원이 도착했습니다* 🚀\n\n*이름:* ${escapeMarkdownV2(name)}\n*연락처:* ${escapeMarkdownV2(contact)}\n\n---\n\n*개인정보처리방침:* ${privacyAgree}\n*제3자 제공/활용:* ${thirdPartyAgree}\n*마케팅 수신:* ${marketingAgree}`;
+        // 텔레그램 메시지 생성 (문제가 된 '---' 줄 제거)
+        const text = `*새로운 입사 지원이 도착했습니다* 🚀\n\n*이름:* ${escapeMarkdownV2(name)}\n*연락처:* ${escapeMarkdownV2(contact)}\n\n*개인정보처리방침:* ${privacyAgree}\n*제3자 제공/활용:* ${thirdPartyAgree}\n*마케팅 수신:* ${marketingAgree}`;
 
         const apiUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
