@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>보험영업 간편입사 지원</title>
+    <title>간편 입사 지원</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Cloudflare Turnstile 스크립트 -->
@@ -45,9 +45,9 @@
 
     <main class="max-w-4xl mx-auto">
         <section class="space-y-0">
-             <img src="/img/land01.png" alt="보험영업 혜택 1" class="w-full" onerror="this.style.display='none'">
-             <img src="/img/land02.png" alt="보험영업 혜택 2" class="w-full" onerror="this.style.display='none'">
-             <img src="/img/land03.png" alt="보험영업 혜택 3" class="w-full" onerror="this.style.display='none'">
+             <img src="/img/land01.png" alt="image1" class="w-full" onerror="this.style.display='none'">
+             <img src="/img/land02.png" alt="image2" class="w-full" onerror="this.style.display='none'">
+             <img src="/img/land03.png" alt="image3" class="w-full" onerror="this.style.display='none'">
         </section>
 
         <div class="p-4 md:p-8">
@@ -56,7 +56,6 @@
                 <div id="status-board-container" class="h-32 overflow-hidden relative"><ul id="status-list" class="absolute top-0 left-0 w-full space-y-2"></ul></div>
             </section>
 
-            <!-- ★★★ 폼 스타일 수정됨 ★★★ -->
             <section id="contact-section" class="mt-16 p-8 bg-white rounded-2xl shadow-2xl">
                 <div class="text-center mb-8">
                     <h2 class="text-2xl font-bold text-gray-900">보험영업 간편입사 지원하기</h2>
@@ -67,6 +66,24 @@
                     <input type="hidden" id="url_params" name="url_params">
                     <input type="hidden" id="scroll_depth" name="scroll_depth" value="0%">
                     
+                    <!-- ★★★ 지원 유형 라디오 버튼 추가 ★★★ -->
+                    <div class="pt-2">
+                        <div class="flex justify-around items-center">
+                            <label class="flex items-center space-x-2 text-sm cursor-pointer">
+                                <input type="radio" name="application_type" value="1명 지원" class="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" checked>
+                                <span>1명 지원</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-sm cursor-pointer">
+                                <input type="radio" name="application_type" value="2명이상 지원" class="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                <span>2명이상 지원</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-sm cursor-pointer">
+                                <input type="radio" name="application_type" value="관리자 지원" class="h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500">
+                                <span>관리자 지원</span>
+                            </label>
+                        </div>
+                    </div>
+
                     <div>
                         <input id="name" name="name" type="text" required class="relative block w-full px-3 py-3 text-gray-900 bg-gray-50 border border-gray-300 rounded-md placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="이름">
                     </div>
@@ -92,7 +109,14 @@
                     
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAABucVGz5ZsXM6npn"></div>
                     
-                    <div><button type="submit" id="submit-button" class="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white bg-indigo-600 border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"><span id="button-text">간편입사 지원하기</span><span id="button-spinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span></button></div>
+                    <div class="space-y-4">
+                        <button type="submit" id="submit-button" class="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white bg-indigo-600 border-transparent rounded-md group hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"><span id="button-text">간편입사 지원하기</span><span id="button-spinner" class="hidden w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span></button>
+                        
+                        <!-- ★★★ 실시간 상담하기 버튼 추가 ★★★ -->
+                        <a href="https://open.kakao.com/o/sqecASfh" target="_blank" class="relative flex justify-center w-full px-4 py-3 text-sm font-medium text-gray-800 bg-yellow-400 border-transparent rounded-md group hover:bg-yellow-500">
+                            실시간 상담하기
+                        </a>
+                    </div>
                 </form>
                 <div id="response-message" class="text-center text-sm mt-4"></div>
             </section>
@@ -104,6 +128,7 @@
     </footer>
 
     <script>
+        // ... (기존 스크립트와 동일)
         const form = document.getElementById('contact-form');
         form.addEventListener('submit', async(e) => {
             e.preventDefault();
@@ -139,15 +164,12 @@
             }
         });
         document.addEventListener('DOMContentLoaded', () => {
-            // 고급 픽셀 추적 로직
             setTimeout(() => { if (typeof fbq === 'function') { fbq('track', 'ViewContent'); } }, 15000);
             document.getElementById('name').addEventListener('focus', () => { if (typeof fbq === 'function') { fbq('track', 'Contact'); } }, { once: true });
             document.getElementById('contact1').addEventListener('focus', () => { if (typeof fbq === 'function') { fbq('track', 'InitiateCheckout'); } }, { once: true });
-            
             let maxScroll = 0;
             const scrollDepthInput = document.getElementById('scroll_depth');
             let scrolled50 = false;
-
             window.addEventListener('scroll', () => {
                 const scrollableHeight = document.body.scrollHeight - window.innerHeight;
                 if (scrollableHeight <= 0) return;
@@ -161,18 +183,12 @@
                     if (typeof fbq === 'function') { fbq('trackCustom', 'Scroll_50_Percent'); }
                 }
             });
-
-            // URL 파라미터 처리 로직
             function prefillFormFromUrl() {
                 const urlParams = new URLSearchParams(window.location.search);
                 document.getElementById('url_params').value = urlParams.toString();
-                
                 const name = urlParams.get('name') || urlParams.get('full_name');
                 const contact = urlParams.get('contact') || urlParams.get('phone_number');
-                
-                if (name && !name.includes('{{')) { 
-                    document.getElementById('name').value = name; 
-                }
+                if (name && !name.includes('{{')) { document.getElementById('name').value = name; }
                 if (contact && !contact.includes('{{')) {
                     const normalizedContact = contact.replace(/[^0-9]/g, '');
                     if (normalizedContact.length >= 10) {
@@ -183,8 +199,6 @@
                 }
             }
             prefillFormFromUrl();
-
-            // 실시간 현황판 로직
             const statusList = document.getElementById('status-list');
             const lastNames = ["김", "이", "박", "최", "정", "강", "조", "윤", "장", "임", "한", "오", "서", "신", "권", "황", "안", "송"];
             const today = new Date();
@@ -220,4 +234,3 @@
     </script>
 </body>
 </html>
-
