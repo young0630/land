@@ -65,6 +65,7 @@ export async function onRequestPost({ request, env }) {
         }
 
         // 2. 사용자가 최종적으로 입력한 정보
+        const applicationType = formData.get('application_type')?.toString() || '선택 안함';
         const submittedName = formData.get('name')?.toString() || '';
         const submittedContact = formData.get('contact')?.toString() || '';
         const scrollDepth = formData.get('scroll_depth')?.toString() || '0%';
@@ -83,6 +84,7 @@ export async function onRequestPost({ request, env }) {
 ${platformInfo}
 
 *👤 사용자 최종 입력 정보*
+*지원 유형:* ${escapeMarkdownV2(applicationType)}
 *이름:* ${escapeMarkdownV2(submittedName)}
 *연락처:* ${escapeMarkdownV2(submittedContact)}
 
